@@ -5,6 +5,8 @@ from unittest import TestCase, main
 
 class TestTensor(TestCase):
     def test_add(self):
+        print('test add')
+        
         x = Tensor(3)
         y = Tensor(4)
         z = x + y
@@ -15,6 +17,8 @@ class TestTensor(TestCase):
         self.assertEqual(y.grad, 1)
 
     def test_neg(self):
+        print('test neg')
+        
         x = Tensor(3)
         y = -x
         self.assertEqual(y.val, -3)
@@ -23,6 +27,8 @@ class TestTensor(TestCase):
         self.assertEqual(x.grad, -1)
 
     def test_sub(self):
+        print('test sub')
+
         x = Tensor(3)
         y = Tensor(4)
         z = x - y
@@ -33,6 +39,8 @@ class TestTensor(TestCase):
         self.assertEqual(y.grad, -1)
 
     def test_mul(self):
+        print('test mul')
+
         x = Tensor(3)
         y = Tensor(4)
         z = x * y
@@ -43,6 +51,8 @@ class TestTensor(TestCase):
         self.assertEqual(y.grad, 3)
 
     def test_truediv(self):
+        print('test div')
+
         x = Tensor(3)
         y = Tensor(4)
         z = x / y
@@ -53,6 +63,8 @@ class TestTensor(TestCase):
         self.assertEqual(y.grad, -3/16)
 
     def test_pow(self):
+        print('test pow')
+
         x = Tensor(3)
         y = x ** 2
         self.assertEqual(y.val, 9)
@@ -61,12 +73,21 @@ class TestTensor(TestCase):
         self.assertEqual(x.grad, 6)
 
     def test_atan(self):
+        print('test atan')
+
         x = Tensor(0.5)
         y = Tensor.atan(x)
-        self.assertAlmostEqual(y.val, 0.4636476090008061)
-        self.assertEqual(y.grad, 0)
         y.backward()
+        self.assertEqual(x.grad, 0.8)
 
+    def test_sin(self):
+        print('test sin')
+
+        x = Tensor(math.pi/4)
+        y = Tensor.sin(x)
+        
+        y.backward()
+        self.assertEqual(x.grad, math.cos(math.pi/4))
 
 
 if __name__ == '__main__':

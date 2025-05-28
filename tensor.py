@@ -9,7 +9,8 @@ class Tensor:
     def __init__(self, 
                  val: float, 
                  requires_grad: List[Tuple[Tensor, Callable[[float], float]]] = [], 
-                 name='none'): 
+                 name='none'):
+                 
         self.val = val
         self.grad = 0.0
         self.required_grad = requires_grad
@@ -114,6 +115,18 @@ class Tensor:
             
         return Tensor(
             val=math.atan(other.val),
+            requires_grad=[(other, grad_func)]
+        )
+
+    @staticmethod
+    def sin(other: Tensor):
+        print('sin')
+
+        def grad_func(grad: float):
+            return grad * math.cos(other.val)
+        
+        return Tensor(
+            val=math.sin(other.val),
             requires_grad=[(other, grad_func)]
         )
 
