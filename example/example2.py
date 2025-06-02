@@ -171,6 +171,5 @@ def main():
     analyze_pitot_ct()
 
 if __name__ == '__main__':
-    print(1)
     main()
 

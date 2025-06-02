@@ -179,15 +179,34 @@ class Tensor:
         
         epsilon = 1e-5
         tmp = math.cos(other.val)
-        if tmp < epsilon and tmp > -epsilon:
+        if -epsilon < tmp < epsilon:
             raise RuntimeError(f'the domain of tan(x) is R(x!=pi/2+k*pi), where k is integer, tolerance is {epsilon},'            
              'but your value {other.val} within the tolerance')
 
         def grad_func(grad: float):
-            return grad / math.cos(other.val)
+            return grad / math.cos(other.val) / math.sin(other.val)
 
         return Tensor(
             val=math.tan(other.val),
+            requires_grad=[(other, grad_func)]
+        )
+
+    @staticmethod
+    def ctg(other: Tensor):
+        if DEBUG_OUTPUT_OPERATOR_NAME:
+            log.ln('ctg operator')
+        
+        epsilon = 1e-5
+        tmp = math.sin(other.val)
+        if -epsilon < tmp < epsilon:
+            raise RuntimeError(f'the domain of ctg(x) is R(x!=k*pi), where k is integer, tolerance is {epsilon},'            
+             'but your value {other.val} within the tolerance')
+        
+        def grad_func(grad: float):
+            return -grad / math.sin(other.val) / math.sin(other.val) 
+
+        return Tensor(
+            val=1/math.tan(other.val) if math.cos(other.val) != 0 else 0,
             requires_grad=[(other, grad_func)]
         )
 

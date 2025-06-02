@@ -99,21 +99,36 @@ class TestTensor(TestCase):
 
     def test_pow2(self):
         x = Tensor(2)
-
         y = x ** 0.5
-
         y.backward()
-
         log.ln(x.grad)
     
     def test_ln(self):
         x = Tensor(10)
-
         y = Tensor.ln(x)
+        y.backward()
+        log.ln(x.grad)
+
+    def test_tan(self):
+        x = Tensor(math.pi / 4)
+        y = Tensor.tan(x)
 
         y.backward()
 
         log.ln(x.grad)
+        log.ln(1/math.cos(math.pi/4)**2)
+
+    def test_ctg(self):
+        x_val = math.pi/6
+        x = Tensor(x_val)
+        y = Tensor.ctg(x)
+
+        y.backward()
+
+        log.ln(x.grad)
+        log.ln(-1/math.sin(x_val)**2)
+        
+
 
 
 if __name__ == '__main__':
